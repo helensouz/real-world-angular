@@ -1,0 +1,56 @@
+<app-navigation></app-navigation>
+
+
+
+<div class="auth-page">
+    <div class="container page">
+        <div class="row">
+
+            <div class="col-md-6 offset-md-3 col-xs-12">
+                <h1 class="text-xs-center">Sign up</h1>
+                <p class="text-xs-center">
+                    <a href="">Have an account?</a>
+                </p>
+                
+
+              
+
+                <form [formGroup]="formGroup" (ngSubmit)="onSubmitRegister()">
+                     <ul class="error-messages">
+                        <li class="" *ngIf="formGroup.get('email')?.invalid"> Adicionar email</li>
+                        <li class="" *ngIf="formGroup.get('password')?.invalid"> Adicionar senha</li>
+
+                    </ul> 
+                    <!-- <div>
+                        <ul class="success-register">
+                            <li > Registro criado com sucesso!</li>
+                        </ul>
+                    </div> -->
+
+
+                    <fieldset class="form-group">
+                        <input formControlName="username" class="form-control form-control-lg" type="text" placeholder="Your Name">
+                       
+                    </fieldset> 
+                    <fieldset class="form-group">
+                        <input  formControlName="emailRegister" class="form-control form-control-lg" type="text" placeholder="Email">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <input formControlName="passwordRegister" class="form-control form-control-lg" type="password" placeholder="Password">
+                    </fieldset>
+                    <button  [disabled]="formGroup.invalid" class="btn btn-lg btn-primary pull-xs-right">
+                        Cadastrar
+                    </button>
+                    <ng-container *ngIf="registerSubmittedResponse$ | async as response">
+                        {{ response }}
+                      </ng-container> 
+                    
+                      <div style="margin-top: 50px">
+                        {{ formGroup.valueChanges | async | json }}
+                        </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'real-world-angular';
+
+formGroup = new FormGroup({
+  inputName: new FormGroup('', Validators.required),
+  inputPassword: new FormGroup('', Validators.required)
+
+})
+
+
+
+
+  
 }
