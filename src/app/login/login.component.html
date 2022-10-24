@@ -26,16 +26,20 @@
               formControlName="inputPassword"
             />
           </fieldset>
-          <button
+          
+          <ng-container *ngIf="state$ | async as state">
+            <button
               
             class="btn btn-lg btn-primary pull-xs-right"
-            [disabled]="formGroup.invalid"
+            [disabled]="formGroup.invalid || state.isLoading"
 
           >
             Entrar
           </button>
-          <ng-container *ngIf="loginSubmittedResponse$ | async as response">
-            {{ response }}
+          <div>
+            {{state.isLoading ? "aguarde.." : "deu erroo"}}
+          </div>
+           
           </ng-container>
           <div style="margin-top: 50px">
             {{ formGroup.valueChanges | async | json }}

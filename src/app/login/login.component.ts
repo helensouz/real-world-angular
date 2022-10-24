@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRouteSnapshot, CanLoad, Route, Router, RouterState, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 import { LoginService } from '../services/login.service';
 
 @Component({
@@ -7,7 +9,7 @@ import { LoginService } from '../services/login.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent   {
 
   formGroup = new FormGroup({
     inputEmail: new FormControl('', [
@@ -21,27 +23,29 @@ export class LoginComponent {
       // Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
     ])
     
+    
 
    });
   
 
-  constructor(private loginService: LoginService) { }
+  constructor
+  (private loginService: LoginService,
+    private router: Router
+    ) { }
 
-  loginSubmittedResponse = '';
 
-  loginSubmittedResponse$ = this.loginService.loginSubmittedResponse$;
+    state$ = this.loginService.state$
 
   onSubmit(){
     const { inputEmail, inputPassword } = this.formGroup.value;
-    this.loginService.dispatch({
-      email: inputEmail!,
-      password: inputPassword!,
-    })
-   console.log('logado')
+     this.loginService.loginSubmit( inputEmail!, inputPassword!)
   }
 
 
+ 
 
+
+  
 
     
  

@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
     
      private router : Router,
      private formBuilder: FormBuilder,
-     private registerService: RegisterService
+     private registerService : RegisterService
      ) { }
 
 
@@ -38,19 +38,18 @@ export class RegisterComponent implements OnInit {
      });
 
 
-     registerSubmittedResponse = '';
-
-     registerSubmittedResponse$ = this.registerService.registerSubmittedResponse$
-
+  
+     state$ = this.registerService.state$
 
      onSubmitRegister(){
-      const {emailRegister, passwordRegister, username} = this.formGroup.value;
-      this.registerService.dispatch({
-        email: emailRegister!,
-        password: passwordRegister!,
-        username: username!
-      })
-      this.router.navigate(['homeLogado'])
+      const {emailRegister, passwordRegister} = this.formGroup.value;
+      this.registerService.registerSubmit(emailRegister!, passwordRegister!)
+
+
+
+      
+
+      
      }
 
 

@@ -38,11 +38,14 @@
                     <fieldset class="form-group">
                         <input formControlName="passwordRegister" class="form-control form-control-lg" type="password" placeholder="Password">
                     </fieldset>
-                    <button  [disabled]="formGroup.invalid" class="btn btn-lg btn-primary pull-xs-right">
-                        Cadastrar
-                    </button>
-                    <ng-container *ngIf="registerSubmittedResponse$ | async as response">
-                        {{ response }}
+
+                    <ng-container *ngIf="state$ | async as state">
+                        <button  [disabled]="formGroup.invalid || state.isLoadingRegister" class="btn btn-lg btn-primary pull-xs-right">
+                            Cadastrar
+                        </button>
+                        <div>
+                            {{state.isLoadingRegister ? "aguarde..": "erro no cadastro"}}
+                        </div>
                       </ng-container> 
                     
                       <div style="margin-top: 50px">

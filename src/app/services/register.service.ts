@@ -1,38 +1,87 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { NewUser } from "../models/newUser";
-import { catchError, map, mergeMap, Observable, of, Subject } from "rxjs";
-export type payload =  {email: string; password: string; username: string}
-export type state =   'error' | 'success'  | 'loading'
+import { BehaviorSubject, catchError, map, mergeMap, Observable, of, Subject } from "rxjs";
+import { Router } from "express";
+ 
+type State ={
+    isLoadingRegister: boolean;
+    registerRequestStatus: 'error' | 'success' | 'nao enviado'
+}
+
+let _state: State = {
+    isLoadingRegister: false,
+    registerRequestStatus: 'nao enviado'
+}
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class RegisterService{  
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient, private router: Router) {}
     private readonly API_URL = 'https://api.realworld.io/api';
 
 
-    private registerSubmittedSubject = new Subject<payload>();
+    private store = new BehaviorSubject<State>(_state)
+    public state$ = this.store.asObservable()
 
-    registerSubmitted$ = this.registerSubmittedSubject.asObservable();
+
+    registerSubmit(email: string, password: string): void{
+        const newState = this.reducer(
+            {type: 'register request', payload: {email, password}},
+            _state
+        );
+        this.store.next(newState)
+    }
+
+    private reducer(
+        action: {type: string; payload?: {email: string, password: string}},
+        currentState: State
+    ): State{
+        switch(action.type){
+            case 'register request': {
+                this.sideEffect(action.payload!.email, action.payload!.password);
+                const newState = {...currentState, isLoadingRegister: true}
+                return newState as State
+            }
+            case 'register sucesso': {
+                const newState = {
+                    ...currentState,
+                    isLoadingRegister: false,
+                    registerRequestStatus: 'success' 
+                }
+                return newState as State
+                
+            
+        }
+         case 'login error': {
+            const newState = {
+                ...currentState,
+                isLoadingRegister: false,
+                registerRequestStatus: 'error' 
+            }
+            return newState as State
+        }
+            default:
+                return currentState
+        }
+    
+    }
+
    
 
-    registerSubmittedResponse$: Observable<state> = this.registerSubmitted$.pipe(
-        mergeMap((payload) => 
-        this.httpClient
-        .post(`${this.API_URL}/users`, {user: payload})
-        .pipe( 
-            map(() => 'success' as state),
-            catchError(() => of('error' as state))
-        )
-    ) 
-    );
+   private sideEffect(email: string, password: string){
+    this.httpClient.post(`${this.API_URL}/users/login`, {
+        user: {email, password}
+    }).subscribe({
+        next: () => {const newState = this.reducer({type: 'register success'}, _state)
+        this.store.next(newState)},
+        error: () => {const newState =  this.reducer({type: 'register error'}, _state)
+        this.store.next(newState)}
 
-    dispatch(payload: payload): void{
-        this.registerSubmittedSubject.next(payload);
-    }
+    })
+   }
 
 
     
