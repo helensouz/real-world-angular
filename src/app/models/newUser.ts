@@ -1,7 +1,9 @@
+export interface NewUser {
 
-export class NewUser{ 
-         id!: string;
-         username!: string;
-         password!: string;
-    
+    username: string;
+    bio: string;
+    image: string;
+    following: boolean;
+   
 }
+

@@ -1,0 +1,12 @@
+.form-article{
+    align-items: center;
+    justify-content: center;
+}
+
+.example-chip-list {
+    width: 100%;
+  }
+  
+  .example-button-container > button {
+    margin: 0 12px;
+  } 

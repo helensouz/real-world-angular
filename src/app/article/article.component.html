@@ -1,0 +1,56 @@
+<nav class="navbar navbar-light">
+    <div class="container">
+        <a class="navbar-brand ng-binding" href="index.html">conduit</a>
+        <ul class="nav navbar-nav pull-xs-right">
+            <li class="nav-item">
+                <a class="nav-link active" routerLink="/home">Home</a>
+            </li>       
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/article">
+                    <i class="ion-compose"></i>&nbsp;New Article
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/article">Settings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/register">Usuário</a>
+            </li>
+        </ul>
+    </div>  
+</nav>
+
+
+
+<div class="editor-page">
+    <div class="container page">
+        <div class="row">
+
+            <div class="col-md-10 offset-md-1 col-xs-12">
+                <form (ngSubmit)="OnSubmit()"  [formGroup]="formGroup">
+                    <fieldset>
+                        <fieldset class="form-group">
+                            <input formControlName="title" type="text" class="form-control form-control-lg" placeholder="Article Title">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <input formControlName="description" type="text" class="form-control" placeholder="What's this article about?">
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <textarea formControlName="body" class="form-control" rows="8"
+                                      placeholder="Write your article (in markdown)"></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <input type="text" class="form-control" placeholder="Enter tags">
+                            <div class="tag-list"></div>
+                        </fieldset>
+                        <button class="btn btn-lg pull-xs-right btn-primary"
+                        [disabled]="formGroup.invalid" type="submit" >
+                            Publish Article
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

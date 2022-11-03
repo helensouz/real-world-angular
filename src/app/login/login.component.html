@@ -37,8 +37,14 @@
             Entrar
           </button>
           <div>
-            {{state.isLoading ? "aguarde.." : "deu erroo"}}
+            {{state.isLoading ? "aguarde.." : "" }}  
           </div>
+          <div>
+            {{ state.loginRequestStatus === 'error' ? 'email ou senha invalidos' 
+          : '' }}
+         
+        </div>
+          
            
           </ng-container>
           <div style="margin-top: 50px">

@@ -1,4 +1,7 @@
-export interface User{
-    email: 'usuario';
-    password: '12345';
-}
+export interface User {
+    email: string;
+    token: string;
+    username: string;
+    bio: string;
+    image: string;
+  }

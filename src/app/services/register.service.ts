@@ -1,12 +1,18 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { NewUser } from "../models/newUser";
 import { BehaviorSubject, catchError, map, mergeMap, Observable, of, Subject } from "rxjs";
-import { Router } from "express";
+import { Router } from "@angular/router";
  
-type State ={
+type State = {
     isLoadingRegister: boolean;
     registerRequestStatus: 'error' | 'success' | 'nao enviado'
+}
+
+type UserCadastro ={
+    username: string,
+    email: string,
+    password: string
+
 }
 
 let _state: State = {
@@ -23,29 +29,30 @@ export class RegisterService{
     private readonly API_URL = 'https://api.realworld.io/api';
 
 
+
     private store = new BehaviorSubject<State>(_state)
     public state$ = this.store.asObservable()
 
 
-    registerSubmit(email: string, password: string): void{
+    registerSubmit(email: string, password: string, username: string): void{
         const newState = this.reducer(
-            {type: 'register request', payload: {email, password}},
+            {type: 'register request', payload: {email, password, username}},
             _state
         );
         this.store.next(newState)
     }
 
     private reducer(
-        action: {type: string; payload?: {email: string, password: string}},
+        action: {type: string; payload?: {email: string, password: string, username: string}},
         currentState: State
     ): State{
         switch(action.type){
             case 'register request': {
-                this.sideEffect(action.payload!.email, action.payload!.password);
+                this.sideEffect( action.payload!.email, action.payload!.password, action.payload!.username);
                 const newState = {...currentState, isLoadingRegister: true}
                 return newState as State
             }
-            case 'register sucesso': {
+            case 'register success': {
                 const newState = {
                     ...currentState,
                     isLoadingRegister: false,
@@ -55,7 +62,7 @@ export class RegisterService{
                 
             
         }
-         case 'login error': {
+         case 'register error': {
             const newState = {
                 ...currentState,
                 isLoadingRegister: false,
@@ -63,22 +70,32 @@ export class RegisterService{
             }
             return newState as State
         }
-            default:
+            default: {
                 return currentState
+            }
+                
         }
     
     }
 
    
 
-   private sideEffect(email: string, password: string){
-    this.httpClient.post(`${this.API_URL}/users/login`, {
-        user: {email, password}
+   private sideEffect(email: string, password: string, username: string){
+
+    this.httpClient.post(`${this.API_URL}/users`, {
+        user: {email, password, username}
     }).subscribe({
-        next: () => {const newState = this.reducer({type: 'register success'}, _state)
-        this.store.next(newState)},
-        error: () => {const newState =  this.reducer({type: 'register error'}, _state)
-        this.store.next(newState)}
+        next: () => {
+            const newState = this.reducer({type: 'register success'}, _state)
+             this.store.next(newState)
+             console.log('deu sucesso', newState)
+
+            },
+        error: () => {
+            const newState =  this.reducer({type: 'register error'}, _state)
+             this.store.next(newState)
+             console.log('deu error', newState)
+            }
 
     })
    }

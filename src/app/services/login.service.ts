@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, mergeMap, Observable, of, Subject } from 'rxjs';
 
  
@@ -20,7 +21,7 @@ let _state: State = {
 export class LoginService {
 
   private readonly API_URL = 'https://api.realworld.io/api';
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private router: Router) { }
 
 
     private store = new BehaviorSubject<State>(_state);
@@ -35,6 +36,8 @@ export class LoginService {
       _state
         );
         this.store.next(newState) //reducer guarda o estado na store
+
+        
   }
   //async
   
@@ -53,8 +56,10 @@ export class LoginService {
           ...currentState,  
           isLoading: false,
            loginRequestStatus: 'success'
+           
        }
        return newState as State
+       
       }
       case 'login error': {
         const newState = {
@@ -70,15 +75,33 @@ export class LoginService {
   }
 }
 
+
+
+
    private sideEffect(email: string, password: string): void{
      this.httpClient.post(`${this.API_URL}/users/login`, {
       user: {email, password},
     }).subscribe({
-      next: () => {const newState =  this.reducer({type: 'login success'}, _state);
-       this.store.next(newState) },
-       error: ()=> {const newState =  this.reducer({type: 'login error'}, _state);
-      this.store.next(newState)}
+      next: (res: any) => 
+      {
+        const newState =  this.reducer({type: 'login sucesso'}, _state);
+       this.store.next(newState)
+       sessionStorage.setItem('jwtToken', res.token) 
+       console.log('login sucesso')
+       this.router.navigate(['homeLogado'])
+    },
+       error: ()=> 
+       {
+        const newState =  this.reducer({type: 'login erro'}, _state);
+        console.log('login err0')
+
+      this.store.next(newState)
+     
+    }
     })
    }
+
+
+ 
   
  }

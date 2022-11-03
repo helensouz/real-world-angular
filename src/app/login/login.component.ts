@@ -39,6 +39,7 @@ export class LoginComponent   {
   onSubmit(){
     const { inputEmail, inputPassword } = this.formGroup.value;
      this.loginService.loginSubmit( inputEmail!, inputPassword!)
+
   }
 
 

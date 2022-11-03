@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Article } from '../models/article';
+import { ArticleService } from '../services/article.service';
+
+
 
 @Component({
   selector: 'app-home-logado',
@@ -7,9 +12,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeLogadoComponent implements OnInit {
 
-  constructor() { }
+  articles$: Observable<Article[]>
+  tags$: Observable<{tags: string}[]>
+
+
+  constructor(private articleService: ArticleService) { 
+    this.articles$ = this.articleService.getAllArticles()
+    this.tags$ = this.articleService.getAllTags()
+
+  }
+
 
   ngOnInit(): void {
+    this.articles$.subscribe(console.log)
+    this.tags$.subscribe(console.log)
   }
 
 }

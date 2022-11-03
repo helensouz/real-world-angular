@@ -1,0 +1,27 @@
+
+.navbar-brand{
+    font-weight: bold;
+}
+
+.nav-link{
+    font-size: 16px;
+}
+
+.mat-ink-bar{
+    background-color: green;
+}
+
+.mat-tab-label-content{
+    color: red;
+}
+
+.card-global-article{
+    display: flex;
+}
+
+
+.card-implementations{
+    background-color: #f3f3f3;
+    height: fit-content;
+}
+

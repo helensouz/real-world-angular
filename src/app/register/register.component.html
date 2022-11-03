@@ -44,8 +44,10 @@
                             Cadastrar
                         </button>
                         <div>
-                            {{state.isLoadingRegister ? "aguarde..": "erro no cadastro"}}
+                            {{state.isLoadingRegister ? "aguarde..": ""}}
+                            {{state.registerRequestStatus ? "error" : "success"}}
                         </div>
+                           
                       </ng-container> 
                     
                       <div style="margin-top: 50px">

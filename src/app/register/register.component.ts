@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -41,10 +42,11 @@ export class RegisterComponent implements OnInit {
   
      state$ = this.registerService.state$
 
-     onSubmitRegister(){
-      const {emailRegister, passwordRegister} = this.formGroup.value;
-      this.registerService.registerSubmit(emailRegister!, passwordRegister!)
+    
 
+     onSubmitRegister(){
+      const {emailRegister, passwordRegister, username} = this.formGroup.value;
+      this.registerService.registerSubmit(emailRegister!, passwordRegister!, username!)
 
 
       
