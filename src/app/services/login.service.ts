@@ -86,7 +86,7 @@ export class LoginService {
       {
         const newState =  this.reducer({type: 'login sucesso'}, _state);
        this.store.next(newState)
-       sessionStorage.setItem('jwtToken', res.token) 
+       sessionStorage.setItem('token', res.user.token) 
        console.log('login sucesso')
        this.router.navigate(['homeLogado'])
     },
